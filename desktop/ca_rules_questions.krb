@@ -1,0 +1,5197 @@
+# bc_simple_rules.krb
+no_fp
+	use what_therapy("Это не фибрилляция предсердий")
+	when
+		notany
+			questions.intervals_RR(True)
+			questions.tooth_P(True)
+			questions.changes_insec(True)
+that_is_fp
+	use that_is_fp()
+	when
+		questions.intervals_RR(True)
+		questions.tooth_P(True)
+		questions.changes_insec(True)
+dyk_rythm_y
+	use dyk_rythm_y()
+	when
+		questions.dyk_rythm($ans)
+		check $ans in (1,)
+dyk_rythm_n
+	use dyk_rythm_n()
+	when
+		questions.dyk_rythm($ans)
+		check $ans in (3,)
+dyk_rythm_dk
+	use dyk_rythm_dk()
+	when
+		questions.dyk_rythm($ans)
+		check $ans in (2,)
+need_cardio
+	use need_cardio()
+	when
+		questions.what_do_you_need($ans)
+		check $ans in (1,)
+need_aat
+	use need_aat()
+	when
+		questions.what_do_you_need($ans)
+		check $ans in (2,)
+need_dkwhat
+	use need_dkwhat()
+	when
+		questions.what_do_you_need($ans)
+		check $ans in (3,)
+ehra_sinus
+	use ehra_sinus()
+	when
+		questions.classification_ehra($ans)
+		check $ans in (3,4,5)
+ehra_czs
+	use ehra_czs()
+	when
+		questions.classification_ehra($ans)
+		check $ans in (1,2)
+sinus_controle_strategy1
+	use sinus_controle_strategy1()
+	when
+		that_is_fp()
+		dyk_rythm_dk()
+		ehra_sinus()
+sinus_controle_strategy2
+	use sinus_controle_strategy2()
+	when
+		that_is_fp()
+		dyk_rythm_y()
+		need_dkwhat()
+		ehra_sinus()
+czs_controle_strategy1
+	use czs_controle_strategy1()
+	when
+		that_is_fp()
+		dyk_rythm_y()
+		need_dkwhat()
+		ehra_czs()
+czs_controle_strategy2
+	use czs_controle_strategy2()
+	when
+		that_is_fp()
+		dyk_rythm_dk()
+		ehra_czs()
+czs_controle_strategy3
+	use czs_controle_strategy3()
+	when
+		that_is_fp()
+		dyk_rythm_n()
+what_therapy_czs_end1
+	use what_therapy("Урежающие ритм препараты не показаны")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(True)
+what_therapy_czs_end2
+	use what_therapy("Урежающие ритм препараты не показаны")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(True)
+what_therapy_czs_end3
+	use what_therapy("Урежающие ритм препараты не показаны")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(True)
+what_therapy_beta_smekg11
+	use what_therapy("Продолжайте терапию бета-адреноблокаторами или верапамилом с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(True)
+what_therapy_beta_smekg21
+	use what_therapy("Продолжайте терапию бета-адреноблокаторами или верапамилом с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(True)
+what_therapy_beta_smekg31
+	use what_therapy("Продолжайте терапию бета-адреноблокаторами или верапамилом с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(True)
+what_therapy_beta_smekg12
+	use what_therapy("Продолжайте терапию с добавлением дигоксина или заменой бета-адреноблокаторов на верапамил с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(True)
+what_therapy_beta_smekg22
+	use what_therapy("Продолжайте терапию с добавлением дигоксина или заменой бета-адреноблокаторов на верапамил с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(True)
+what_therapy_beta_smekg32
+	use what_therapy("Продолжайте терапию с добавлением дигоксина или заменой бета-адреноблокаторов на верапамил с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(True)
+what_therapy_beta_smekg13
+	use what_therapy("Продолжайте терапию дигоксином и бета-адреноблокаторами (начинать с малых доз) с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(True)
+what_therapy_beta_smekg23
+	use what_therapy("Продолжайте терапию дигоксином и бета-адреноблокаторами (начинать с малых доз) с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(True)
+what_therapy_beta_smekg33
+	use what_therapy("Продолжайте терапию дигоксином и бета-адреноблокаторами (начинать с малых доз) с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(True)
+what_therapy_beta_smekg14
+	use what_therapy("Продолжайте терапию с добавлением амиодарона с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(True)
+what_therapy_beta_smekg24
+	use what_therapy("Продолжайте терапию с добавлением амиодарона с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(True)
+what_therapy_beta_smekg34
+	use what_therapy("Продолжайте терапию с добавлением амиодарона с контролем СМЭКГ через 4 недели")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(True)
+what_therapy_ablacion11
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(False)
+what_therapy_ablacion21
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(False)
+what_therapy_ablacion31
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(True)
+		questions.beta_vera(False)
+		questions.add_digo_vera(False)
+what_therapy_ablacion12
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy1()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(False)
+what_therapy_ablacion22
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy2()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(False)
+what_therapy_ablacion32
+	use what_therapy("Аблация АВ-соединения и имплантация ЭКС")
+	when
+		czs_controle_strategy3()
+		questions.czs_times(False)
+		questions.fb_inpercent(False)
+		questions.digo_beta(False)
+		questions.add_amio(False)
+go_to_cardio1
+	use go_to_cardio1()
+	when
+		that_is_fp()
+		dyk_rythm_y()
+		need_cardio()
+go_to_cardio2
+	use go_to_cardio2()
+	when
+		that_is_fp()
+		sinus_controle_strategy1()
+go_to_cardio3
+	use go_to_cardio3()
+	when
+		that_is_fp()
+		sinus_controle_strategy2()
+what_therapy_immidcardio1
+	use what_therapy("Пациенту показана экстренная наружная электрическая кардиоверсия (дефибрилляция)")
+	when
+		go_to_cardio1()
+		notany
+			questions.arterio_gipo(False)
+			questions.sinko_presinko(False)
+			questions.ishemia_miokarda(False)
+			questions.nedost(False)
+what_therapy_immidcardio2
+	use what_therapy("Пациенту показана экстренная наружная электрическая кардиоверсия (дефибрилляция)")
+	when
+		go_to_cardio2()
+		notany
+			questions.arterio_gipo(False)
+			questions.sinko_presinko(False)
+			questions.ishemia_miokarda(False)
+			questions.nedost(False)
+what_therapy_immidcardio3
+	use what_therapy("Пациенту показана экстренная наружная электрическая кардиоверсия (дефибрилляция)")
+	when
+		go_to_cardio3()
+		notany
+			questions.arterio_gipo(False)
+			questions.sinko_presinko(False)
+			questions.ishemia_miokarda(False)
+			questions.nedost(False)
+plan_cardio1
+	use plan_cardio1()
+	when
+		go_to_cardio1()
+		questions.arterio_gipo(False)
+		questions.sinko_presinko(False)
+		questions.ishemia_miokarda(False)
+		questions.nedost(False)
+plan_cardio2
+	use plan_cardio2()
+	when
+		go_to_cardio2()
+		questions.arterio_gipo(False)
+		questions.sinko_presinko(False)
+		questions.ishemia_miokarda(False)
+		questions.nedost(False)
+plan_cardio3
+	use plan_cardio3()
+	when
+		go_to_cardio3()
+		questions.arterio_gipo(False)
+		questions.sinko_presinko(False)
+		questions.ishemia_miokarda(False)
+		questions.nedost(False)
+gepa_enko
+	use gepa_enko()
+	when
+		questions.vipoln_a($ans)
+		check $ans in (1,)
+fast_coago
+	use fast_coago()
+	when
+		questions.vipoln_b($ans)
+		check $ans in (1,)
+long_anticoago
+	use long_anticoago()
+	when
+		questions.vipoln_c($ans)
+		check $ans in (1,)
+cpehokg11
+	use cpehokg11()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(True)
+cpehokg12
+	use cpehokg12()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(True)
+cpehokg13
+	use cpehokg13()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(True)
+cpehokg14
+	use cpehokg14()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(True)
+cpehokg15
+	use cpehokg15()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(True)
+cpehokg16
+	use cpehokg16()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(True)
+cpehokg21
+	use cpehokg21()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(False)
+		gepa_enko()
+cpehokg22
+	use cpehokg22()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(False)
+		gepa_enko()
+cpehokg23
+	use cpehokg23()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(False)
+		gepa_enko()
+cpehokg31
+	use cpehokg31()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(False)
+		questions.early_cardio(True)
+		fast_coago()
+cpehokg32
+	use cpehokg32()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(False)
+		questions.early_cardio(True)
+		fast_coago()
+cpehokg33
+	use cpehokg33()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(False)
+		questions.early_cardio(True)
+		fast_coago()
+cpehokg41
+	use cpehokg41()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(False)
+		questions.early_cardio(False)
+		long_anticoago()
+cpehokg42
+	use cpehokg42()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(False)
+		questions.early_cardio(False)
+		long_anticoago()
+cpehokg43
+	use cpehokg43()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(False)
+		questions.early_cardio(False)
+		long_anticoago()
+what_therapy_controle_czs1
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg11()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs2
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg12()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs3
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg13()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs4
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg14()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs5
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg15()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs6
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg16()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs7
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg21()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs8
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg22()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs9
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg23()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs10
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg31()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs11
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg32()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs12
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg33()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs13
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg41()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs14
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg42()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+what_therapy_controle_czs15
+	use what_therapy("Предпочесть тактику контроля ЧЖС")
+	when
+		cpehokg43()
+		questions.left_tromb(True)
+		questions.still_left_tromb(True)
+cardioright1
+	use cardioright1()
+	when
+		plan_cardio1()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(False)
+cardioright2
+	use cardioright2()
+	when
+		plan_cardio2()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(False)
+cardioright3
+	use cardioright3()
+	when
+		plan_cardio3()
+		questions.paroksizm_length(True)
+		questions.antikoag_we(True)
+		questions.complaen(False)
+		questions.risk_teo(False)
+cardioright4
+	use cardioright4()
+	when
+		cpehokg11()
+		questions.left_tromb(False)
+cardioright5
+	use cardioright5()
+	when
+		cpehokg12()
+		questions.left_tromb(False)
+cardioright6
+	use cardioright6()
+	when
+		cpehokg13()
+		questions.left_tromb(False)
+cardioright7
+	use cardioright7()
+	when
+		cpehokg14()
+		questions.left_tromb(False)
+cardioright8
+	use cardioright8()
+	when
+		cpehokg15()
+		questions.left_tromb(False)
+cardioright9
+	use cardioright9()
+	when
+		cpehokg16()
+		questions.left_tromb(False)
+cardioright10
+	use cardioright10()
+	when
+		cpehokg21()
+		questions.left_tromb(False)
+cardioright11
+	use cardioright11()
+	when
+		cpehokg22()
+		questions.left_tromb(False)
+cardioright12
+	use cardioright12()
+	when
+		cpehokg23()
+		questions.left_tromb(False)
+cardioright13
+	use cardioright13()
+	when
+		cpehokg31()
+		questions.left_tromb(False)
+cardioright14
+	use cardioright14()
+	when
+		cpehokg32()
+		questions.left_tromb(False)
+cardioright15
+	use cardioright15()
+	when
+		cpehokg33()
+		questions.left_tromb(False)
+cardioright16
+	use cardioright16()
+	when
+		cpehokg41()
+		questions.left_tromb(False)
+cardioright17
+	use cardioright17()
+	when
+		cpehokg42()
+		questions.left_tromb(False)
+cardioright18
+	use cardioright18()
+	when
+		cpehokg43()
+		questions.left_tromb(False)
+cardioright19
+	use cardioright19()
+	when
+		cpehokg11()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright20
+	use cardioright20()
+	when
+		cpehokg12()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright21
+	use cardioright21()
+	when
+		cpehokg13()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright22
+	use cardioright22()
+	when
+		cpehokg14()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright23
+	use cardioright23()
+	when
+		cpehokg15()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright24
+	use cardioright24()
+	when
+		cpehokg16()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright25
+	use cardioright10()
+	when
+		cpehokg21()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright26
+	use cardioright26()
+	when
+		cpehokg22()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright27
+	use cardioright27()
+	when
+		cpehokg23()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright28
+	use cardioright28()
+	when
+		cpehokg31()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright29
+	use cardioright29()
+	when
+		cpehokg32()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright30
+	use cardioright30()
+	when
+		cpehokg33()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright31
+	use cardioright31()
+	when
+		cpehokg41()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright32
+	use cardioright32()
+	when
+		cpehokg42()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+cardioright33
+	use cardioright33()
+	when
+		cpehokg43()
+		questions.left_tromb(True)
+		questions.still_left_tromb(False)
+elect_card_q
+	use elect_card_q()
+	when
+		notany
+			questions.aap_effective(False)
+			questions.aap_nelza(False)
+			questions.pacient_wants(False)
+electrocardio1
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright1()
+		elect_card_q()
+electrocardio2
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright2()
+		elect_card_q()
+electrocardio3
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright3()
+		elect_card_q()
+electrocardio4
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright4()
+		elect_card_q()
+electrocardio5
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright5()
+		elect_card_q()
+electrocardio6
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright6()
+		elect_card_q()
+electrocardio7
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright7()
+		elect_card_q()
+electrocardio8
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright8()
+		elect_card_q()
+electrocardio9
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright9()
+		elect_card_q()
+electrocardio10
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright10()
+		elect_card_q()
+electrocardio11
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright11()
+		elect_card_q()
+electrocardio12
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright12()
+		elect_card_q()
+electrocardio13
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright13()
+		elect_card_q()
+electrocardio14
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright14()
+		elect_card_q()
+electrocardio15
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright15()
+		elect_card_q()
+electrocardio16
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright16()
+		elect_card_q()
+electrocardio17
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright17()
+		elect_card_q()
+electrocardio18
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright18()
+		elect_card_q()
+electrocardio19
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright19()
+		elect_card_q()
+electrocardio20
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright20()
+		elect_card_q()
+electrocardio21
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright21()
+		elect_card_q()
+electrocardio22
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright22()
+		elect_card_q()
+electrocardio23
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright23()
+		elect_card_q()
+electrocardio24
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright24()
+		elect_card_q()
+electrocardio25
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright25()
+		elect_card_q()
+electrocardio26
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright26()
+		elect_card_q()
+electrocardio27
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright27()
+		elect_card_q()
+electrocardio28
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright28()
+		elect_card_q()
+electrocardio29
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright29()
+		elect_card_q()
+electrocardio30
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright30()
+		elect_card_q()
+electrocardio31
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright31()
+		elect_card_q()
+electrocardio32
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright32()
+		elect_card_q()
+electrocardio33
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright33()
+		elect_card_q()
+quest_false
+	use quest_false()
+	when
+		questions.aap_effective(False)
+		questions.aap_nelza(False)
+		questions.pacient_wants(False)
+amio_refr
+	use amio_refr()
+	when
+		quest_false()
+		questions.structural_piks(True)
+		questions.vip_a($ans)
+		check $ans in (1,)
+amio_refr_electro
+	use amio_refr_electro()
+	when
+		amio_refr()
+		questions.therapy_is_effective(False)
+propa_os
+	use propa_os()
+	when
+		quest_false()
+		questions.structural_piks(False)
+		questions.vip_b($ans)
+		check $ans in (1,)
+propa_os_electro
+	use propa_os_electro()
+	when
+		propa_os()
+		questions.therapy_is_effective(False)
+electrocardio41
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright1()
+		amio_refr_electro()
+electrocardio42
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright2()
+		amio_refr_electro()
+electrocardio43
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright3()
+		amio_refr_electro()
+electrocardio44
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright4()
+		amio_refr_electro()
+electrocardio45
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright5()
+		amio_refr_electro()
+electrocardio46
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright6()
+		amio_refr_electro()
+electrocardio47
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright7()
+		amio_refr_electro()
+electrocardio48
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright8()
+		amio_refr_electro()
+electrocardio49
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright9()
+		amio_refr_electro()
+electrocardio50
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright10()
+		amio_refr_electro()
+electrocardio51
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright11()
+		amio_refr_electro()
+electrocardio52
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright12()
+		amio_refr_electro()
+electrocardio53
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright13()
+		amio_refr_electro()
+electrocardio54
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright14()
+		amio_refr_electro()
+electrocardio55
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright15()
+		amio_refr_electro()
+electrocardio56
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright16()
+		amio_refr_electro()
+electrocardio57
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright17()
+		amio_refr_electro()
+electrocardio58
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright18()
+		amio_refr_electro()
+electrocardio59
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright19()
+		amio_refr_electro()
+electrocardio60
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright20()
+		amio_refr_electro()
+electrocardio61
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright21()
+		amio_refr_electro()
+electrocardio62
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright22()
+		amio_refr_electro()
+electrocardio63
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright23()
+		amio_refr_electro()
+electrocardio64
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright24()
+		amio_refr_electro()
+electrocardio65
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright25()
+		amio_refr_electro()
+electrocardio66
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright26()
+		amio_refr_electro()
+electrocardio67
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright27()
+		amio_refr_electro()
+electrocardio68
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright28()
+		amio_refr_electro()
+electrocardio69
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright29()
+		amio_refr_electro()
+electrocardio70
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright30()
+		amio_refr_electro()
+electrocardio71
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright31()
+		amio_refr_electro()
+electrocardio72
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright32()
+		amio_refr_electro()
+electrocardio73
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright33()
+		amio_refr_electro()
+electrocardio74
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright1()
+		propa_os_electro()
+electrocardio75
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright2()
+		propa_os_electro()
+electrocardio76
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright3()
+		propa_os_electro()
+electrocardio77
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright4()
+		propa_os_electro()
+electrocardio78
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright5()
+		propa_os_electro()
+electrocardio79
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright6()
+		propa_os_electro()
+electrocardio80
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright7()
+		propa_os_electro()
+electrocardio81
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright8()
+		propa_os_electro()
+electrocardio82
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright9()
+		propa_os_electro()
+electrocardio83
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright10()
+		propa_os_electro()
+electrocardio84
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright11()
+		propa_os_electro()
+electrocardio85
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright12()
+		propa_os_electro()
+electrocardio86
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright13()
+		propa_os_electro()
+electrocardio87
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright14()
+		propa_os_electro()
+electrocardio88
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright15()
+		propa_os_electro()
+electrocardio89
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright16()
+		propa_os_electro()
+electrocardio90
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright17()
+		propa_os_electro()
+electrocardio91
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright18()
+		propa_os_electro()
+electrocardio92
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright19()
+		propa_os_electro()
+electrocardio93
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright20()
+		propa_os_electro()
+electrocardio94
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright21()
+		propa_os_electro()
+electrocardio95
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright22()
+		propa_os_electro()
+electrocardio96
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright23()
+		propa_os_electro()
+electrocardio97
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright24()
+		propa_os_electro()
+electrocardio98
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright25()
+		propa_os_electro()
+electrocardio99
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright26()
+		propa_os_electro()
+electrocardio100
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright27()
+		propa_os_electro()
+electrocardio101
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright28()
+		propa_os_electro()
+electrocardio102
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright29()
+		propa_os_electro()
+electrocardio103
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright30()
+		propa_os_electro()
+electrocardio104
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright31()
+		propa_os_electro()
+electrocardio105
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright32()
+		propa_os_electro()
+electrocardio106
+	use what_therapy("Проведение электрической кардиоверсии")
+	when
+		cardioright33()
+		propa_os_electro()
+amio_refr_aat
+	use amio_refr_aat()
+	when
+		amio_refr()
+		questions.therapy_is_effective(True)
+amio_refr_ablacia
+	use amio_refr_ablacia()
+	when
+		amio_refr_aat()
+		questions.invaz_vmesh(True)
+propa_os_aat
+	use propa_os_aat()
+	when
+		propa_os()
+		questions.therapy_is_effective(True)
+propa_os_ablacia
+	use propa_os_ablacia()
+	when
+		propa_os_aat()
+		questions.invaz_vmesh(True)
+antiprep
+	use antiprep()
+	when
+		that_is_fp()
+		dyk_rythm_y()
+		need_aat()
+ablacia1
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		antiprep()
+		questions.invaz_vmesh(True)
+ablacia2
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		amio_refr_ablacia()
+ablacia3
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		amio_refr_ablacia()
+ablacia4
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		amio_refr_ablacia()
+ablacia5
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		amio_refr_ablacia()
+ablacia6
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		amio_refr_ablacia()
+ablacia7
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		amio_refr_ablacia()
+ablacia8
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		amio_refr_ablacia()
+ablacia9
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		amio_refr_ablacia()
+ablacia10
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		amio_refr_ablacia()
+ablacia11
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		amio_refr_ablacia()
+ablacia12
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		amio_refr_ablacia()
+ablacia13
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		amio_refr_ablacia()
+ablacia14
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		amio_refr_ablacia()
+ablacia15
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		amio_refr_ablacia()
+ablacia16
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		amio_refr_ablacia()
+ablacia17
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		amio_refr_ablacia()
+ablacia18
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		amio_refr_ablacia()
+ablacia19
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		amio_refr_ablacia()
+ablacia20
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		amio_refr_ablacia()
+ablacia21
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		amio_refr_ablacia()
+ablacia22
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		amio_refr_ablacia()
+ablacia23
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		amio_refr_ablacia()
+ablacia24
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		amio_refr_ablacia()
+ablacia25
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		amio_refr_ablacia()
+ablacia26
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		amio_refr_ablacia()
+ablacia27
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		amio_refr_ablacia()
+ablacia28
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		amio_refr_ablacia()
+ablacia29
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		amio_refr_ablacia()
+ablacia30
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		amio_refr_ablacia()
+ablacia31
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		amio_refr_ablacia()
+ablacia32
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		amio_refr_ablacia()
+ablacia33
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		amio_refr_ablacia()
+ablacia34
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		amio_refr_ablacia()
+ablacia35
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		propa_os_ablacia()
+ablacia36
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		propa_os_ablacia()
+ablacia37
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		propa_os_ablacia()
+ablacia38
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		propa_os_ablacia()
+ablacia39
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		propa_os_ablacia()
+ablacia40
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		propa_os_ablacia()
+ablacia41
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		propa_os_ablacia()
+ablacia42
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		propa_os_ablacia()
+ablacia43
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		propa_os_ablacia()
+ablacia44
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		propa_os_ablacia()
+ablacia45
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		propa_os_ablacia()
+ablacia46
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		propa_os_ablacia()
+ablacia47
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		propa_os_ablacia()
+ablacia48
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		propa_os_ablacia()
+ablacia49
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		propa_os_ablacia()
+ablacia50
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		propa_os_ablacia()
+ablacia51
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		propa_os_ablacia()
+ablacia52
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		propa_os_ablacia()
+ablacia53
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		propa_os_ablacia()
+ablacia54
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		propa_os_ablacia()
+ablacia55
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		propa_os_ablacia()
+ablacia56
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		propa_os_ablacia()
+ablacia57
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		propa_os_ablacia()
+ablacia58
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		propa_os_ablacia()
+ablacia59
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		propa_os_ablacia()
+ablacia60
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		propa_os_ablacia()
+ablacia61
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		propa_os_ablacia()
+ablacia62
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		propa_os_ablacia()
+ablacia63
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		propa_os_ablacia()
+ablacia64
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		propa_os_ablacia()
+ablacia65
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		propa_os_ablacia()
+ablacia66
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		propa_os_ablacia()
+ablacia67
+	use what_therapy("Проведение аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		propa_os_ablacia()
+ehra_beta_adreno1
+	use ehra_beta_adreno1()
+	when
+		amio_refr_aat()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (1,2)
+ehra_beta_adreno2
+	use ehra_beta_adreno2()
+	when
+		propa_os_aat()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (1,2)
+ehra_aat1
+	use ehra_aat1()
+	when
+		amio_refr_aat()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (3,4,5)
+ehra_aat2
+	use ehra_aat2()
+	when
+		propa_os_aat()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (3,4,5)
+antiprep_beta
+	use antiprep_beta()
+	when
+		antiprep()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (1,2)
+antiprep_aap
+	use antiprep_aap()
+	when
+		antiprep()
+		questions.invaz_vmesh(False)
+		questions.ehra_two($ans)
+		check $ans in (3,4,5)
+beta_adreno1
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		antiprep_beta()
+beta_adreno2
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright1()
+		ehra_beta_adreno1()
+beta_adreno3
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright2()
+		ehra_beta_adreno1()
+beta_adreno4
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright3()
+		ehra_beta_adreno1()
+beta_adreno5
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright4()
+		ehra_beta_adreno1()
+beta_adreno6
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright5()
+		ehra_beta_adreno1()
+beta_adreno7
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright6()
+		ehra_beta_adreno1()
+beta_adreno8
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright7()
+		ehra_beta_adreno1()
+beta_adreno9
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright8()
+		ehra_beta_adreno1()
+beta_adreno10
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright9()
+		ehra_beta_adreno1()
+beta_adreno11
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright10()
+		ehra_beta_adreno1()
+beta_adreno12
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright11()
+		ehra_beta_adreno1()
+beta_adreno13
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright12()
+		ehra_beta_adreno1()
+beta_adreno14
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright13()
+		ehra_beta_adreno1()
+beta_adreno15
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright14()
+		ehra_beta_adreno1()
+beta_adreno16
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright15()
+		ehra_beta_adreno1()
+beta_adreno17
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright16()
+		ehra_beta_adreno1()
+beta_adreno18
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright17()
+		ehra_beta_adreno1()
+beta_adreno19
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright18()
+		ehra_beta_adreno1()
+beta_adreno20
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright19()
+		ehra_beta_adreno1()
+beta_adreno21
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright20()
+		ehra_beta_adreno1()
+beta_adreno22
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright21()
+		ehra_beta_adreno1()
+beta_adreno23
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright22()
+		ehra_beta_adreno1()
+beta_adreno24
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright23()
+		ehra_beta_adreno1()
+beta_adreno25
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright24()
+		ehra_beta_adreno1()
+beta_adreno26
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright25()
+		ehra_beta_adreno1()
+beta_adreno27
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright26()
+		ehra_beta_adreno1()
+beta_adreno28
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright27()
+		ehra_beta_adreno1()
+beta_adreno29
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright28()
+		ehra_beta_adreno1()
+beta_adreno30
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright29()
+		ehra_beta_adreno1()
+beta_adreno31
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright30()
+		ehra_beta_adreno1()
+beta_adreno32
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright31()
+		ehra_beta_adreno1()
+beta_adreno33
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright32()
+		ehra_beta_adreno1()
+beta_adreno34
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright33()
+		ehra_beta_adreno1()
+beta_adreno35
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright1()
+		ehra_beta_adreno2()
+beta_adreno36
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright2()
+		ehra_beta_adreno2()
+beta_adreno37
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright3()
+		ehra_beta_adreno2()
+beta_adreno38
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright4()
+		ehra_beta_adreno2()
+beta_adreno39
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright5()
+		ehra_beta_adreno2()
+beta_adreno40
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright6()
+		ehra_beta_adreno2()
+beta_adreno41
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright7()
+		ehra_beta_adreno2()
+beta_adreno42
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright8()
+		ehra_beta_adreno2()
+beta_adreno43
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright9()
+		ehra_beta_adreno2()
+beta_adreno44
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright10()
+		ehra_beta_adreno2()
+beta_adreno45
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright11()
+		ehra_beta_adreno2()
+beta_adreno46
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright12()
+		ehra_beta_adreno2()
+beta_adreno47
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright13()
+		ehra_beta_adreno2()
+beta_adreno48
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright14()
+		ehra_beta_adreno2()
+beta_adreno49
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright15()
+		ehra_beta_adreno2()
+beta_adreno50
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright16()
+		ehra_beta_adreno2()
+beta_adreno51
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright17()
+		ehra_beta_adreno2()
+beta_adreno52
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright18()
+		ehra_beta_adreno2()
+beta_adreno53
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright19()
+		ehra_beta_adreno2()
+beta_adreno54
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright20()
+		ehra_beta_adreno2()
+beta_adreno55
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright21()
+		ehra_beta_adreno2()
+beta_adreno56
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright22()
+		ehra_beta_adreno2()
+beta_adreno57
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright23()
+		ehra_beta_adreno2()
+beta_adreno58
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright24()
+		ehra_beta_adreno2()
+beta_adreno59
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright25()
+		ehra_beta_adreno2()
+beta_adreno60
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright26()
+		ehra_beta_adreno2()
+beta_adreno61
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright27()
+		ehra_beta_adreno2()
+beta_adreno62
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright28()
+		ehra_beta_adreno2()
+beta_adreno63
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright29()
+		ehra_beta_adreno2()
+beta_adreno64
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright30()
+		ehra_beta_adreno2()
+beta_adreno65
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright31()
+		ehra_beta_adreno2()
+beta_adreno66
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright32()
+		ehra_beta_adreno2()
+beta_adreno67
+	use what_therapy("Бета-адреноблокаторы")
+	when
+		cardioright33()
+		ehra_beta_adreno2()
+amio_eff1
+	use amio_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(True)
+amio_eff2
+	use amio_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(True)
+amio_eff3
+	use amio_eff3()
+	when
+		antiprep()
+		questions.invaz_vmesh(False)
+amio_ne_eff1
+	use amio_ne_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(False)
+amio_ne_eff2
+	use amio_ne_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(False)
+amio_sota_eff1
+	use amio_sota_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(True)
+amio_sota_eff2
+	use amio_sota_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(True)
+amio_sota_ne_eff1
+	use amio_sota_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(False)
+amio_sota_ne_eff2
+	use amio_sota_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(False)
+consult_aritm1
+	use consult_aritm1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(True)
+consult_aritm2
+	use consult_aritm2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(True)
+antiprep1
+	use antiprep1()
+	when
+		antiprep_aap()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(True)
+antiprep2
+	use antiprep2()
+	when
+		antiprep_aap()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(True)
+		questions.amiodaron_eff(False)
+antiprep3
+	use antiprep3()
+	when
+		antiprep_aap()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(True)
+antiprep4
+	use antiprep4()
+	when
+		antiprep_aap()
+		questions.are_there_dis(True)
+		questions.hsn_or_fvlz(False)
+		questions.amio_sota_eff(False)
+antiprep5
+	use antiprep5()
+	when
+		antiprep_aap()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(True)
+antiprep6
+	use antiprep6()
+	when
+		antiprep_aap()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(True)
+antiprep7
+	use antiprep7()
+	when
+		antiprep_aap()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(False)
+antiprep8
+	use antiprep8()
+	when
+		antiprep_aap()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(True)
+antiprep9
+	use antiprep9()
+	when
+		antiprep_aap()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(False)
+propa_eta_eff1
+	use propa_eta_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(True)
+propa_eta_eff2
+	use propa_eta_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(True)
+propa_eta_ne_eff1
+	use propa_eta_ne_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(False)
+propa_eta_ne_eff2
+	use propa_eta_ne_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (1,)
+		questions.propa_eta(False)
+eta_alla_eff1
+	use eta_alla_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(True)
+eta_alla_eff2
+	use eta_alla_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(True)
+eta_alla_ne_eff1
+	use eta_alla_ne_eff1()
+	when
+		ehra_aat1()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(False)
+eta_alla_ne_eff2
+	use eta_alla_ne_eff2()
+	when
+		ehra_aat2()
+		questions.are_there_dis(False)
+		questions.spinoatr_atrioven(False)
+		questions.tahi_bradi($ans)
+		check $ans in (2,)
+		questions.eta_alla(False)
+therapy_amiodaron_ok1
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		antiprep1()
+therapy_amiodaron_ok2
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright1()
+		amio_eff1()
+therapy_amiodaron_ok3
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright2()
+		amio_eff1()
+therapy_amiodaron_ok4
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright3()
+		amio_eff1()
+therapy_amiodaron_ok5
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright4()
+		amio_eff1()
+therapy_amiodaron_ok6
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright5()
+		amio_eff1()
+therapy_amiodaron_ok7
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright6()
+		amio_eff1()
+therapy_amiodaron_ok8
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright7()
+		amio_eff1()
+therapy_amiodaron_ok9
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright8()
+		amio_eff1()
+therapy_amiodaron_ok10
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright9()
+		amio_eff1()
+therapy_amiodaron_ok11
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright10()
+		amio_eff1()
+therapy_amiodaron_ok12
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright11()
+		amio_eff1()
+therapy_amiodaron_ok13
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright12()
+		amio_eff1()
+therapy_amiodaron_ok14
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright13()
+		amio_eff1()
+therapy_amiodaron_ok15
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright14()
+		amio_eff1()
+therapy_amiodaron_ok16
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright15()
+		amio_eff1()
+therapy_amiodaron_ok17
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright16()
+		amio_eff1()
+therapy_amiodaron_ok18
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright17()
+		amio_eff1()
+therapy_amiodaron_ok19
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright18()
+		amio_eff1()
+therapy_amiodaron_ok20
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright19()
+		amio_eff1()
+therapy_amiodaron_ok21
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright20()
+		amio_eff1()
+therapy_amiodaron_ok22
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright21()
+		amio_eff1()
+therapy_amiodaron_ok23
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright22()
+		amio_eff1()
+therapy_amiodaron_ok24
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright23()
+		amio_eff1()
+therapy_amiodaron_ok25
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright24()
+		amio_eff1()
+therapy_amiodaron_ok26
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright25()
+		amio_eff1()
+therapy_amiodaron_ok27
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright26()
+		amio_eff1()
+therapy_amiodaron_ok28
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright27()
+		amio_eff1()
+therapy_amiodaron_ok29
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright28()
+		amio_eff1()
+therapy_amiodaron_ok30
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright29()
+		amio_eff1()
+therapy_amiodaron_ok31
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright30()
+		amio_eff1()
+therapy_amiodaron_ok32
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright31()
+		amio_eff1()
+therapy_amiodaron_ok33
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright32()
+		amio_eff1()
+therapy_amiodaron_ok34
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright33()
+		amio_eff1()
+therapy_amiodaron_ok35
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright1()
+		amio_eff2()
+therapy_amiodaron_ok36
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright2()
+		amio_eff2()
+therapy_amiodaron_ok37
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright3()
+		amio_eff2()
+therapy_amiodaron_ok38
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright4()
+		amio_eff2()
+therapy_amiodaron_ok39
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright5()
+		amio_eff2()
+therapy_amiodaron_ok40
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright6()
+		amio_eff2()
+therapy_amiodaron_ok41
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright7()
+		amio_eff2()
+therapy_amiodaron_ok42
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright8()
+		amio_eff2()
+therapy_amiodaron_ok43
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright9()
+		amio_eff2()
+therapy_amiodaron_ok44
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright10()
+		amio_eff2()
+therapy_amiodaron_ok45
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright11()
+		amio_eff2()
+therapy_amiodaron_ok46
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright12()
+		amio_eff2()
+therapy_amiodaron_ok47
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright13()
+		amio_eff2()
+therapy_amiodaron_ok48
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright14()
+		amio_eff2()
+therapy_amiodaron_ok49
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright15()
+		amio_eff2()
+therapy_amiodaron_ok50
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright16()
+		amio_eff2()
+therapy_amiodaron_ok51
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright17()
+		amio_eff2()
+therapy_amiodaron_ok52
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright18()
+		amio_eff2()
+therapy_amiodaron_ok53
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright19()
+		amio_eff2()
+therapy_amiodaron_ok54
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright20()
+		amio_eff2()
+therapy_amiodaron_ok55
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright21()
+		amio_eff2()
+therapy_amiodaron_ok56
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright22()
+		amio_eff2()
+therapy_amiodaron_ok57
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright23()
+		amio_eff2()
+therapy_amiodaron_ok58
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright24()
+		amio_eff2()
+therapy_amiodaron_ok59
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright25()
+		amio_eff2()
+therapy_amiodaron_ok60
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright26()
+		amio_eff2()
+therapy_amiodaron_ok61
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright27()
+		amio_eff2()
+therapy_amiodaron_ok62
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright28()
+		amio_eff2()
+therapy_amiodaron_ok63
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright29()
+		amio_eff2()
+therapy_amiodaron_ok64
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright30()
+		amio_eff2()
+therapy_amiodaron_ok65
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright31()
+		amio_eff2()
+therapy_amiodaron_ok66
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright32()
+		amio_eff2()
+therapy_amiodaron_ok67
+	use what_therapy("Продолжить терапию амиодароном с контролем ТТГ 1 раз в 6 месяцев")
+	when
+		cardioright33()
+		amio_eff2()
+therapy_amiodaron_ne_ok1
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		antiprep2()
+therapy_amiodaron_ne_ok2
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok3
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok4
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok5
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok6
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok7
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok8
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok9
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok10
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok11
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok12
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok13
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok14
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok15
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok16
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok17
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok18
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok19
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok20
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok21
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok22
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok23
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok24
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok25
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok26
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok27
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok28
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok29
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok30
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok31
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok32
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok33
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok34
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		amio_ne_eff1()
+therapy_amiodaron_ne_ok35
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok36
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok37
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok38
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok39
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok40
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok41
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok42
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok43
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok44
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok45
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok46
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok47
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok48
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok49
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok50
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok51
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok52
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok53
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok54
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok55
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok56
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok57
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok58
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok59
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok60
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok61
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok62
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok63
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok64
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok65
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok66
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		amio_ne_eff2()
+therapy_amiodaron_ne_ok67
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		amio_ne_eff2()
+therapy_amio_sota_ok1
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		antiprep3()
+therapy_amio_sota_ok2
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright1()
+		amio_sota_eff1()
+therapy_amio_sota_ok3
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright2()
+		amio_sota_eff1()
+therapy_amio_sota_ok4
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright3()
+		amio_sota_eff1()
+therapy_amio_sota_ok5
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright4()
+		amio_sota_eff1()
+therapy_amio_sota_ok6
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright5()
+		amio_sota_eff1()
+therapy_amio_sota_ok7
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright6()
+		amio_sota_eff1()
+therapy_amio_sota_ok8
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright7()
+		amio_sota_eff1()
+therapy_amio_sota_ok9
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright8()
+		amio_sota_eff1()
+therapy_amio_sota_ok10
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright9()
+		amio_sota_eff1()
+therapy_amio_sota_ok11
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright10()
+		amio_sota_eff1()
+therapy_amio_sota_ok12
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright11()
+		amio_sota_eff1()
+therapy_amio_sota_ok13
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright12()
+		amio_sota_eff1()
+therapy_amio_sota_ok14
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright13()
+		amio_sota_eff1()
+therapy_amio_sota_ok15
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright14()
+		amio_sota_eff1()
+therapy_amio_sota_ok16
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright15()
+		amio_sota_eff1()
+therapy_amio_sota_ok17
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright16()
+		amio_sota_eff1()
+therapy_amio_sota_ok18
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright17()
+		amio_sota_eff1()
+therapy_amio_sota_ok19
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright18()
+		amio_sota_eff1()
+therapy_amio_sota_ok20
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright19()
+		amio_sota_eff1()
+therapy_amio_sota_ok21
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright20()
+		amio_sota_eff1()
+therapy_amio_sota_ok22
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright21()
+		amio_sota_eff1()
+therapy_amio_sota_ok23
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright22()
+		amio_sota_eff1()
+therapy_amio_sota_ok24
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright23()
+		amio_sota_eff1()
+therapy_amio_sota_ok25
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright24()
+		amio_sota_eff1()
+therapy_amio_sota_ok26
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright25()
+		amio_sota_eff1()
+therapy_amio_sota_ok27
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright26()
+		amio_sota_eff1()
+therapy_amio_sota_ok28
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright27()
+		amio_sota_eff1()
+therapy_amio_sota_ok29
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright28()
+		amio_sota_eff1()
+therapy_amio_sota_ok30
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright29()
+		amio_sota_eff1()
+therapy_amio_sota_ok31
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright30()
+		amio_sota_eff1()
+therapy_amio_sota_ok32
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright31()
+		amio_sota_eff1()
+therapy_amio_sota_ok33
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright32()
+		amio_sota_eff1()
+therapy_amio_sota_ok34
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright33()
+		amio_sota_eff1()
+therapy_amio_sota_ok35
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright1()
+		amio_sota_eff2()
+therapy_amio_sota_ok36
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright2()
+		amio_sota_eff2()
+therapy_amio_sota_ok37
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright3()
+		amio_sota_eff2()
+therapy_amio_sota_ok38
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright4()
+		amio_sota_eff2()
+therapy_amio_sota_ok39
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright5()
+		amio_sota_eff2()
+therapy_amio_sota_ok40
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright6()
+		amio_sota_eff2()
+therapy_amio_sota_ok41
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright7()
+		amio_sota_eff2()
+therapy_amio_sota_ok42
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright8()
+		amio_sota_eff2()
+therapy_amio_sota_ok43
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright9()
+		amio_sota_eff2()
+therapy_amio_sota_ok44
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright10()
+		amio_sota_eff2()
+therapy_amio_sota_ok45
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright11()
+		amio_sota_eff2()
+therapy_amio_sota_ok46
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright12()
+		amio_sota_eff2()
+therapy_amio_sota_ok47
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright13()
+		amio_sota_eff2()
+therapy_amio_sota_ok48
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright14()
+		amio_sota_eff2()
+therapy_amio_sota_ok49
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright15()
+		amio_sota_eff2()
+therapy_amio_sota_ok50
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright16()
+		amio_sota_eff2()
+therapy_amio_sota_ok51
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright17()
+		amio_sota_eff2()
+therapy_amio_sota_ok52
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright18()
+		amio_sota_eff2()
+therapy_amio_sota_ok53
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright19()
+		amio_sota_eff2()
+therapy_amio_sota_ok54
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright20()
+		amio_sota_eff2()
+therapy_amio_sota_ok55
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright21()
+		amio_sota_eff2()
+therapy_amio_sota_ok56
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright22()
+		amio_sota_eff2()
+therapy_amio_sota_ok57
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright23()
+		amio_sota_eff2()
+therapy_amio_sota_ok58
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright24()
+		amio_sota_eff2()
+therapy_amio_sota_ok59
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright25()
+		amio_sota_eff2()
+therapy_amio_sota_ok60
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright26()
+		amio_sota_eff2()
+therapy_amio_sota_ok61
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright27()
+		amio_sota_eff2()
+therapy_amio_sota_ok62
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright28()
+		amio_sota_eff2()
+therapy_amio_sota_ok63
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright29()
+		amio_sota_eff2()
+therapy_amio_sota_ok64
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright30()
+		amio_sota_eff2()
+therapy_amio_sota_ok65
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright31()
+		amio_sota_eff2()
+therapy_amio_sota_ok66
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright32()
+		amio_sota_eff2()
+therapy_amio_sota_ok67
+	use what_therapy("Продолжить терапию амиодароном или соталолом с контролем ТТГ 1 раз в 6 месяцев для амиодарона и коррегированного QT для соталола")
+	when
+		cardioright33()
+		amio_sota_eff2()
+therapy_amio_sota_ne_ok1
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		antiprep4()
+therapy_amio_sota_ne_ok2
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok3
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok4
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok5
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok6
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok7
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok8
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok9
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok10
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok11
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok12
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok13
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok14
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok15
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok16
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok17
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok18
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok19
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok20
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok21
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok22
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok23
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok24
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok25
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok26
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok27
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok28
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok29
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok30
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok31
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok32
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok33
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok34
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		amio_sota_ne_eff2()
+therapy_amio_sota_ne_ok35
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok36
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok37
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok38
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok39
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok40
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok41
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok42
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok43
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok44
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok45
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok46
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok47
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok48
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok49
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok50
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok51
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok52
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok53
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok54
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok55
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok56
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok57
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok58
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok59
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok60
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok61
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok62
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok63
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok64
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok65
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok66
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		amio_sota_ne_eff1()
+therapy_amio_sota_ne_ok67
+	use what_therapy("Повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		amio_sota_ne_eff1()
+therapy_propa_eta_ok1
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		antiprep6()
+therapy_propa_eta_ok2
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright1()
+		propa_eta_eff1()
+therapy_propa_eta_ok3
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright2()
+		propa_eta_eff1()
+therapy_propa_eta_ok4
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright3()
+		propa_eta_eff1()
+therapy_propa_eta_ok5
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright4()
+		propa_eta_eff1()
+therapy_propa_eta_ok6
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright5()
+		propa_eta_eff1()
+therapy_propa_eta_ok7
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright6()
+		propa_eta_eff1()
+therapy_propa_eta_ok8
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright7()
+		propa_eta_eff1()
+therapy_propa_eta_ok9
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright8()
+		propa_eta_eff1()
+therapy_propa_eta_ok10
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright9()
+		propa_eta_eff1()
+therapy_propa_eta_ok11
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright10()
+		propa_eta_eff1()
+therapy_propa_eta_ok12
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright11()
+		propa_eta_eff1()
+therapy_propa_eta_ok13
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright12()
+		propa_eta_eff1()
+therapy_propa_eta_ok14
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright13()
+		propa_eta_eff1()
+therapy_propa_eta_ok15
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright14()
+		propa_eta_eff1()
+therapy_propa_eta_ok16
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright15()
+		propa_eta_eff1()
+therapy_propa_eta_ok17
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright16()
+		propa_eta_eff1()
+therapy_propa_eta_ok18
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright17()
+		propa_eta_eff1()
+therapy_propa_eta_ok19
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright18()
+		propa_eta_eff1()
+therapy_propa_eta_ok20
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright19()
+		propa_eta_eff1()
+therapy_propa_eta_ok21
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright20()
+		propa_eta_eff1()
+therapy_propa_eta_ok22
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright21()
+		propa_eta_eff1()
+therapy_propa_eta_ok23
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright22()
+		propa_eta_eff1()
+therapy_propa_eta_ok24
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright23()
+		propa_eta_eff1()
+therapy_propa_eta_ok25
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright24()
+		propa_eta_eff1()
+therapy_propa_eta_ok26
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright25()
+		propa_eta_eff1()
+therapy_propa_eta_ok27
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright26()
+		propa_eta_eff1()
+therapy_propa_eta_ok28
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright27()
+		propa_eta_eff1()
+therapy_propa_eta_ok29
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright28()
+		propa_eta_eff1()
+therapy_propa_eta_ok30
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright29()
+		propa_eta_eff1()
+therapy_propa_eta_ok31
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright30()
+		propa_eta_eff1()
+therapy_propa_eta_ok32
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright31()
+		propa_eta_eff1()
+therapy_propa_eta_ok33
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright32()
+		propa_eta_eff1()
+therapy_propa_eta_ok34
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright33()
+		propa_eta_eff1()
+therapy_propa_eta_ok35
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright1()
+		propa_eta_eff2()
+therapy_propa_eta_ok36
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright2()
+		propa_eta_eff2()
+therapy_propa_eta_ok37
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright3()
+		propa_eta_eff2()
+therapy_propa_eta_ok38
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright4()
+		propa_eta_eff2()
+therapy_propa_eta_ok39
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright5()
+		propa_eta_eff2()
+therapy_propa_eta_ok40
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright6()
+		propa_eta_eff2()
+therapy_propa_eta_ok41
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright7()
+		propa_eta_eff2()
+therapy_propa_eta_ok42
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright8()
+		propa_eta_eff2()
+therapy_propa_eta_ok43
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright9()
+		propa_eta_eff2()
+therapy_propa_eta_ok44
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright10()
+		propa_eta_eff2()
+therapy_propa_eta_ok45
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright11()
+		propa_eta_eff2()
+therapy_propa_eta_ok46
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright12()
+		propa_eta_eff2()
+therapy_propa_eta_ok47
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright13()
+		propa_eta_eff2()
+therapy_propa_eta_ok48
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright14()
+		propa_eta_eff2()
+therapy_propa_eta_ok49
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright15()
+		propa_eta_eff2()
+therapy_propa_eta_ok50
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright16()
+		propa_eta_eff2()
+therapy_propa_eta_ok51
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright17()
+		propa_eta_eff2()
+therapy_propa_eta_ok52
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright18()
+		propa_eta_eff2()
+therapy_propa_eta_ok53
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright19()
+		propa_eta_eff2()
+therapy_propa_eta_ok54
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright20()
+		propa_eta_eff2()
+therapy_propa_eta_ok55
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright21()
+		propa_eta_eff2()
+therapy_propa_eta_ok56
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright22()
+		propa_eta_eff2()
+therapy_propa_eta_ok57
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright23()
+		propa_eta_eff2()
+therapy_propa_eta_ok58
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright24()
+		propa_eta_eff2()
+therapy_propa_eta_ok59
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright25()
+		propa_eta_eff2()
+therapy_propa_eta_ok60
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright26()
+		propa_eta_eff2()
+therapy_propa_eta_ok61
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright27()
+		propa_eta_eff2()
+therapy_propa_eta_ok62
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright28()
+		propa_eta_eff2()
+therapy_propa_eta_ok63
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright29()
+		propa_eta_eff2()
+therapy_propa_eta_ok64
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright30()
+		propa_eta_eff2()
+therapy_propa_eta_ok65
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright31()
+		propa_eta_eff2()
+therapy_propa_eta_ok66
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright32()
+		propa_eta_eff2()
+therapy_propa_eta_ok67
+	use what_therapy("Продолжить терапию: пропафенон, этацизин+бета-адреноблокаторы, соталол. Контроль коррегированного QT при применении соталола")
+	when
+		cardioright33()
+		propa_eta_eff2()
+therapy_propa_eta_ne_ok1
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		antiprep7()
+therapy_propa_eta_ne_ok2
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok3
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok4
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok5
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok6
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok7
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok8
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok9
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok10
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok11
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok12
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok13
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok14
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok15
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok16
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok17
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok18
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok19
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok20
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok21
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok22
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok23
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok24
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok25
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok26
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok27
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok28
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok29
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok30
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok31
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok32
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok33
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok34
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		propa_eta_ne_eff2()
+therapy_propa_eta_ne_ok35
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok36
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok37
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok38
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok39
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok40
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok41
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok42
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok43
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok44
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok45
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok46
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok47
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok48
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok49
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok50
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok51
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok52
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok53
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok54
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok55
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok56
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok57
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok58
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok59
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok60
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok61
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok62
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok63
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok64
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok65
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok66
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		propa_eta_ne_eff1()
+therapy_propa_eta_ne_ok67
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		propa_eta_ne_eff1()
+therapy_eta_alla_ok1
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		antiprep8()
+therapy_eta_alla_ok2
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright1()
+		eta_alla_eff1()
+therapy_eta_alla_ok3
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright2()
+		eta_alla_eff1()
+therapy_eta_alla_ok4
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright3()
+		eta_alla_eff1()
+therapy_eta_alla_ok5
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright4()
+		eta_alla_eff1()
+therapy_eta_alla_ok6
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright5()
+		eta_alla_eff1()
+therapy_eta_alla_ok7
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright6()
+		eta_alla_eff1()
+therapy_eta_alla_ok8
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright7()
+		eta_alla_eff1()
+therapy_eta_alla_ok9
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright8()
+		eta_alla_eff1()
+therapy_eta_alla_ok10
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright9()
+		eta_alla_eff1()
+therapy_eta_alla_ok11
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright10()
+		eta_alla_eff1()
+therapy_eta_alla_ok12
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright11()
+		eta_alla_eff1()
+therapy_eta_alla_ok13
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright12()
+		eta_alla_eff1()
+therapy_eta_alla_ok14
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright13()
+		eta_alla_eff1()
+therapy_eta_alla_ok15
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright14()
+		eta_alla_eff1()
+therapy_eta_alla_ok16
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright15()
+		eta_alla_eff1()
+therapy_eta_alla_ok17
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright16()
+		eta_alla_eff1()
+therapy_eta_alla_ok18
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright17()
+		eta_alla_eff1()
+therapy_eta_alla_ok19
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright18()
+		eta_alla_eff1()
+therapy_eta_alla_ok20
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright19()
+		eta_alla_eff1()
+therapy_eta_alla_ok21
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright20()
+		eta_alla_eff1()
+therapy_eta_alla_ok22
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright21()
+		eta_alla_eff1()
+therapy_eta_alla_ok23
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright22()
+		eta_alla_eff1()
+therapy_eta_alla_ok24
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright23()
+		eta_alla_eff1()
+therapy_eta_alla_ok25
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright24()
+		eta_alla_eff1()
+therapy_eta_alla_ok26
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright25()
+		eta_alla_eff1()
+therapy_eta_alla_ok27
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright26()
+		eta_alla_eff1()
+therapy_eta_alla_ok28
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright27()
+		eta_alla_eff1()
+therapy_eta_alla_ok29
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright28()
+		eta_alla_eff1()
+therapy_eta_alla_ok30
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright29()
+		eta_alla_eff1()
+therapy_eta_alla_ok31
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright30()
+		eta_alla_eff1()
+therapy_eta_alla_ok32
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright31()
+		eta_alla_eff1()
+therapy_eta_alla_ok33
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright32()
+		eta_alla_eff1()
+therapy_eta_alla_ok34
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright33()
+		eta_alla_eff1()
+therapy_eta_alla_ok35
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright1()
+		eta_alla_eff2()
+therapy_eta_alla_ok36
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright2()
+		eta_alla_eff2()
+therapy_eta_alla_ok37
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright3()
+		eta_alla_eff2()
+therapy_eta_alla_ok38
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright4()
+		eta_alla_eff2()
+therapy_eta_alla_ok39
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright5()
+		eta_alla_eff2()
+therapy_eta_alla_ok40
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright6()
+		eta_alla_eff2()
+therapy_eta_alla_ok41
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright7()
+		eta_alla_eff2()
+therapy_eta_alla_ok42
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright8()
+		eta_alla_eff2()
+therapy_eta_alla_ok43
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright9()
+		eta_alla_eff2()
+therapy_eta_alla_ok44
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright10()
+		eta_alla_eff2()
+therapy_eta_alla_ok45
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright11()
+		eta_alla_eff2()
+therapy_eta_alla_ok46
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright12()
+		eta_alla_eff2()
+therapy_eta_alla_ok47
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright13()
+		eta_alla_eff2()
+therapy_eta_alla_ok48
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright14()
+		eta_alla_eff2()
+therapy_eta_alla_ok49
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright15()
+		eta_alla_eff2()
+therapy_eta_alla_ok50
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright16()
+		eta_alla_eff2()
+therapy_eta_alla_ok51
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright17()
+		eta_alla_eff2()
+therapy_eta_alla_ok52
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright18()
+		eta_alla_eff2()
+therapy_eta_alla_ok53
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright19()
+		eta_alla_eff2()
+therapy_eta_alla_ok54
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright20()
+		eta_alla_eff2()
+therapy_eta_alla_ok55
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright21()
+		eta_alla_eff2()
+therapy_eta_alla_ok56
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright22()
+		eta_alla_eff2()
+therapy_eta_alla_ok57
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright23()
+		eta_alla_eff2()
+therapy_eta_alla_ok58
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright24()
+		eta_alla_eff2()
+therapy_eta_alla_ok59
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright25()
+		eta_alla_eff2()
+therapy_eta_alla_ok60
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright26()
+		eta_alla_eff2()
+therapy_eta_alla_ok61
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright27()
+		eta_alla_eff2()
+therapy_eta_alla_ok62
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright28()
+		eta_alla_eff2()
+therapy_eta_alla_ok63
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright29()
+		eta_alla_eff2()
+therapy_eta_alla_ok64
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright30()
+		eta_alla_eff2()
+therapy_eta_alla_ok65
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright31()
+		eta_alla_eff2()
+therapy_eta_alla_ok66
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright32()
+		eta_alla_eff2()
+therapy_eta_alla_ok67
+	use what_therapy("Продолжить терапию: этацизин, аллапинин. Контроль коррегированного QT")
+	when
+		cardioright33()
+		eta_alla_eff2()
+therapy_eta_alla_ne_ok1
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		antiprep9()
+therapy_eta_alla_ne_ok2
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok3
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok4
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok5
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok6
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok7
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok8
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok9
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok10
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok11
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok12
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok13
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok14
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok15
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok16
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok17
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok18
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok19
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok20
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok21
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok22
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok23
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok24
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok25
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok26
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok27
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok28
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok29
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok30
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok31
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok32
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok33
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok34
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		eta_alla_ne_eff2()
+therapy_eta_alla_ne_ok35
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright1()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok36
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright2()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok37
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright3()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok38
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright4()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok39
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright5()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok40
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright6()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok41
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright7()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok42
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright8()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok43
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright9()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok44
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright10()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok45
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright11()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok46
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright12()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok47
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright13()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok48
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright14()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok49
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright15()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok50
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright16()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok51
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright17()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok52
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright18()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok53
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright19()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok54
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright20()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok55
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright21()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok56
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright22()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok57
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright23()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok58
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright24()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok59
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright25()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok60
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright26()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok61
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright27()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok62
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright28()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok63
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright29()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok64
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright30()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok65
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright31()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok66
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright32()
+		eta_alla_ne_eff1()
+therapy_eta_alla_ne_ok67
+	use what_therapy("Рассмотреть выбор другого антиаритмического препарата, либо повторно рассмотреть вопрос о проведении катетерной аблации устьев лёгочных вен")
+	when
+		cardioright33()
+		eta_alla_ne_eff1()
+therapy_consult_aritm1
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		antiprep5()
+therapy_consult_aritm2
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright1()
+		consult_aritm1()
+therapy_consult_aritm3
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright2()
+		consult_aritm1()
+therapy_consult_aritm4
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright3()
+		consult_aritm1()
+therapy_consult_aritm5
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright4()
+		consult_aritm1()
+therapy_consult_aritm6
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright5()
+		consult_aritm1()
+therapy_consult_aritm7
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright6()
+		consult_aritm1()
+therapy_consult_aritm8
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright7()
+		consult_aritm1()
+therapy_consult_aritm9
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright8()
+		consult_aritm1()
+therapy_consult_aritm10
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright9()
+		consult_aritm1()
+therapy_consult_aritm11
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright10()
+		consult_aritm1()
+therapy_consult_aritm12
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright11()
+		consult_aritm1()
+therapy_consult_aritm13
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright12()
+		consult_aritm1()
+therapy_consult_aritm14
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright13()
+		consult_aritm1()
+therapy_consult_aritm15
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright14()
+		consult_aritm1()
+therapy_consult_aritm16
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright15()
+		consult_aritm1()
+therapy_consult_aritm17
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright16()
+		consult_aritm1()
+therapy_consult_aritm18
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright17()
+		consult_aritm1()
+therapy_consult_aritm19
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright18()
+		consult_aritm1()
+therapy_consult_aritm20
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright19()
+		consult_aritm1()
+therapy_consult_aritm21
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright20()
+		consult_aritm1()
+therapy_consult_aritm22
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright21()
+		consult_aritm1()
+therapy_consult_aritm23
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright22()
+		consult_aritm1()
+therapy_consult_aritm24
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright23()
+		consult_aritm1()
+therapy_consult_aritm25
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright24()
+		consult_aritm1()
+therapy_consult_aritm26
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright25()
+		consult_aritm1()
+therapy_consult_aritm27
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright26()
+		consult_aritm1()
+therapy_consult_aritm28
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright27()
+		consult_aritm1()
+therapy_consult_aritm29
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright28()
+		consult_aritm1()
+therapy_consult_aritm30
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright29()
+		consult_aritm1()
+therapy_consult_aritm31
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright30()
+		consult_aritm1()
+therapy_consult_aritm32
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright31()
+		consult_aritm1()
+therapy_consult_aritm33
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright32()
+		consult_aritm1()
+therapy_consult_aritm34
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright33()
+		consult_aritm1()
+therapy_consult_aritm35
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright1()
+		consult_aritm2()
+therapy_consult_aritm36
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright2()
+		consult_aritm2()
+therapy_consult_aritm37
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright3()
+		consult_aritm2()
+therapy_consult_aritm38
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright4()
+		consult_aritm2()
+therapy_consult_aritm39
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright5()
+		consult_aritm2()
+therapy_consult_aritm40
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright6()
+		consult_aritm2()
+therapy_consult_aritm41
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright7()
+		consult_aritm2()
+therapy_consult_aritm42
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright8()
+		consult_aritm2()
+therapy_consult_aritm43
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright9()
+		consult_aritm2()
+therapy_consult_aritm44
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright10()
+		consult_aritm2()
+therapy_consult_aritm45
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright11()
+		consult_aritm2()
+therapy_consult_aritm46
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright12()
+		consult_aritm2()
+therapy_consult_aritm47
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright13()
+		consult_aritm2()
+therapy_consult_aritm48
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright14()
+		consult_aritm2()
+therapy_consult_aritm49
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright15()
+		consult_aritm2()
+therapy_consult_aritm50
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright16()
+		consult_aritm2()
+therapy_consult_aritm51
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright17()
+		consult_aritm2()
+therapy_consult_aritm52
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright18()
+		consult_aritm2()
+therapy_consult_aritm53
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright19()
+		consult_aritm2()
+therapy_consult_aritm54
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright20()
+		consult_aritm2()
+therapy_consult_aritm55
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright21()
+		consult_aritm2()
+therapy_consult_aritm56
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright22()
+		consult_aritm2()
+therapy_consult_aritm57
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright23()
+		consult_aritm2()
+therapy_consult_aritm58
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright24()
+		consult_aritm2()
+therapy_consult_aritm59
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright25()
+		consult_aritm2()
+therapy_consult_aritm60
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright26()
+		consult_aritm2()
+therapy_consult_aritm61
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright27()
+		consult_aritm2()
+therapy_consult_aritm62
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright28()
+		consult_aritm2()
+therapy_consult_aritm63
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright29()
+		consult_aritm2()
+therapy_consult_aritm64
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright30()
+		consult_aritm2()
+therapy_consult_aritm65
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright31()
+		consult_aritm2()
+therapy_consult_aritm66
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright32()
+		consult_aritm2()
+therapy_consult_aritm67
+	use what_therapy("Необходима консультация аритмолога и решение вопроса о постановке ЭКС")
+	when
+		cardioright33()
+		consult_aritm2()
